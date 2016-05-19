@@ -1,5 +1,5 @@
-CLOUD
-=====
+HOSTNAMES
+=========
 
 Manage hostnames and /etc/hosts files. Currently supports Linode. AWS support coming soon.
 
