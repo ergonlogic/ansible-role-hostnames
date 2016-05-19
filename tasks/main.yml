@@ -1,0 +1,6 @@
+---
+
+- name: Include Linode hostname tasks
+  include: linode.yml
+  when: ergonlogic_hostname_provider == 'linode'
+
