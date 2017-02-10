@@ -1,0 +1,14 @@
+---
+- hosts: localhost
+  connection: local
+
+  vars:
+  - cloud:
+      aws:
+        ec2:
+          test1: {}
+          test2: {}
+
+  roles:
+  - ergonlogic.cloud
+

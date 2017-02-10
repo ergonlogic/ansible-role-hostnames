@@ -1,0 +1,13 @@
+---
+- hosts: all
+
+  roles:
+  - ergonlogic.hostnames
+
+  tasks:
+
+  - name: Check each VMs hostname
+    command: hostname
+    register: checked_hostnames
+
+#  - ...

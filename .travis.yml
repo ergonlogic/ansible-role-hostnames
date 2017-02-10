@@ -1,0 +1,23 @@
+dist: trusty
+sudo: false
+os:
+- linux
+addons:
+  apt:
+    packages:
+    - python-yaml
+env:
+  matrix:
+  - TEST_TARGET="linode-test"
+  - TEST_TARGET="aws-ec2-test"
+  global:
+before_script:
+- export PATH=$HOME/.local/bin:$PATH
+- pip install --upgrade pip
+- pip install --user chube boto jinja2 httplib2 six
+- make behat
+script:
+- ". d"
+- make $TEST_TARGET
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
