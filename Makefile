@@ -1,4 +1,3 @@
-ANSIBLE_ROLES_PATH       ?= tests/roles
 ROLES_PATH       ?= tests/roles
 LINODE_INVENTORY ?= $(ROLES_PATH)/ergonlogic.cloud/inventory/linode.py
 EC2_INVENTORY    ?= $(ROLES_PATH)/ergonlogic.cloud/inventory/ec2.py
@@ -13,12 +12,8 @@ $(ROLES_PATH)/ergonlogic.hostnames:
 
 linode-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
 linode-test: init-tests generate-keypair
-	export ANSIBLE_ROLES_PATH=$(ROLES_PATH)
-#	ANSIBLE_ROLES_PATH=$(ROLES_PATH)
 	ansible-playbook tests/hosts/linode/setup.yml -i $(LINODE_INVENTORY)
-#	ANSIBLE_ROLES_PATH=$(ROLES_PATH)
 	ansible-playbook tests/hosts/common/test0.yml -i $(LINODE_INVENTORY)
-#	ANSIBLE_ROLES_PATH=$(ROLES_PATH)
 	ansible-playbook tests/hosts/linode/cleanup.yml -i $(LINODE_INVENTORY)
 
 ec2-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)

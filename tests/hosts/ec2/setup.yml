@@ -6,8 +6,8 @@
   - cloud:
       aws:
         ec2:
-          test1: {}
-          test2: {}
+          hostnames1: {}
+          hostnames2: {}
 
   roles:
   - ergonlogic.cloud
