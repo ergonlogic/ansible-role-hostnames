@@ -15,6 +15,11 @@ hostnames-test: init-tests generate-keypair inv
 	ansible-playbook tests/hosts/setup.yml
 	ansible-playbook tests/hosts/ec2.yml
 	ansible-playbook tests/hosts/linode.yml
+	make inv > /dev/null
+	ansible-playbook tests/hosts/cleanup.yml
+
+cleanup: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
+cleanup: inv
 	ansible-playbook tests/hosts/cleanup.yml
 
 inv: inventory
