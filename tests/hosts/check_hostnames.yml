@@ -1,4 +1,12 @@
 ---
-- name: Check that hostnames are properly set
+
+- name: Check hostnames
   command: hostname
-  register: checked_hostnames
+  register: checked_hostname
+  changed_when: False
+
+- name: Check FQDNs
+  command: hostname --fqdn
+  register: checked_fqdn
+  changed_when: False
+

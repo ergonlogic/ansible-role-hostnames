@@ -15,7 +15,7 @@
     line: "{{ hostvars[item].ec2_private_ip_address }} {{ hostvars[item].ec2_tag_Name }}"
     state: present
   become: true
-  when: hostvars[item].ec2_tag_Name != hostname
+  when: groups['ec2'] is defined and hostvars[item].ec2_tag_Name != hostname
   with_items:
   - "{{ groups['ec2'] }}"
 
@@ -26,7 +26,7 @@
     line: "{{ hostvars[item].public_ip }} {{ hostvars[item].linode_name }}"
     state: present
   become: true
-  when: hostvars[item].linode_name != hostname
+  when: groups['linode'] is defined and hostvars[item].linode_name != hostname
   with_items:
   - "{{ groups['linode'] }}"
 

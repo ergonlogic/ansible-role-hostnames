@@ -12,11 +12,14 @@ $(ROLES_PATH)/ergonlogic.hostnames:
 
 hostnames-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
 hostnames-test: init-tests generate-keypair inv
-	ansible-playbook tests/hosts/setup.yml
-	ansible-playbook tests/hosts/ec2.yml
-	ansible-playbook tests/hosts/linode.yml
-	make inv > /dev/null
-	ansible-playbook tests/hosts/cleanup.yml
+	if ! out=`ansible-playbook tests/hosts/setup.yml`; then echo $$out; fi
+	if ! out=`make inv`; then echo $$out; fi
+	ansible-playbook tests/hosts/apply_ec2.yml
+	ansible-playbook tests/hosts/apply_linode.yml
+	ansible-playbook tests/hosts/check_ec2.yml
+	ansible-playbook tests/hosts/check_linode.yml
+	if ! out=`make inv`; then echo $$out; fi
+	if ! out=`ansible-playbook tests/hosts/cleanup.yml`; then echo $$out; fi
 
 cleanup: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
 cleanup: inv

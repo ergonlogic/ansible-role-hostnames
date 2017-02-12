@@ -6,6 +6,3 @@
   roles:
   - ergonlogic.hostnames
 
-  tasks:
-
-  - include: check_hostnames.yml

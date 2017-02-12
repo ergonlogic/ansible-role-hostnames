@@ -1,0 +1,18 @@
+---
+- hosts: ec2
+
+  remote_user: 'admin'
+
+  vars:
+    dns_zone: 'example.com'
+
+  tasks:
+  - include: check_hostnames.yml
+
+  - name: Check that hostnames are properly set
+    assert:
+      that:
+        - "'{{ checked_hostname.stdout }}' == '{{ ec2_tag_Name }}'"
+        - "'{{ checked_fqdn.stdout }}' == '{{ ec2_tag_Name }}.{{ dns_zone }}'"
+      msg: 'Hostname or FQDN does not appear to be properly set.'
+
