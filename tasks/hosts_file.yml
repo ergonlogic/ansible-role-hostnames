@@ -1,0 +1,32 @@
+---
+
+- name: Update /etc/hosts with localhost.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^127.0.0.1"
+    line: "127.0.0.1 {{ fqdn }} {{ hostname }} localhost"
+    state: present
+  become: true
+
+- name: Build hosts file, to include each of the *other* EC2 hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: ".*{{ hostvars[item].ec2_tag_Name }}$"
+    line: "{{ hostvars[item].ec2_private_ip_address }} {{ hostvars[item].ec2_tag_Name }}"
+    state: present
+  become: true
+  when: hostvars[item].ec2_tag_Name != hostname
+  with_items:
+  - "{{ groups['ec2'] }}"
+
+- name: Build hosts file, to include each of the *other* Linode hosts.
+  lineinfile:
+    dest: /etc/hosts
+    regexp: ".*{{ hostvars[item].linode_name }}$"
+    line: "{{ hostvars[item].public_ip }} {{ hostvars[item].linode_name }}"
+    state: present
+  become: true
+  when: hostvars[item].linode_name != hostname
+  with_items:
+  - "{{ groups['linode'] }}"
+

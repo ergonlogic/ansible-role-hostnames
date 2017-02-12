@@ -6,8 +6,9 @@
   - cloud:
       aws:
         ec2:
-          hostnames1: {}
-          hostnames2: {}
+          ec2-host: {}
+      linode:
+        linode-host: {}
 
   roles:
   - ergonlogic.cloud

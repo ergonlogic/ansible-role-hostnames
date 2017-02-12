@@ -1,0 +1,4 @@
+---
+- name: Check that hostnames are properly set
+  command: hostname
+  register: checked_hostnames

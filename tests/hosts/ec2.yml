@@ -1,0 +1,11 @@
+---
+- hosts: ec2
+
+  remote_user: 'admin'
+
+  roles:
+  - ergonlogic.hostnames
+
+  tasks:
+
+  - include: check_hostnames.yml

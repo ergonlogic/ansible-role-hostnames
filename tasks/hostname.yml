@@ -1,0 +1,26 @@
+---
+
+# TODO: Return to using the hostname module, once it works again.
+#- name: Set or update hostname.
+#  hostname:
+#    name: "{{ hostname }}"
+
+- name: Look up current hostname.
+  command: "hostname"
+  changed_when: False
+  register: current_hostname
+
+- name: Update hostname.
+  command: "hostname {{ hostname }}"
+  become: true
+  when: current_hostname.stdout != hostname
+
+- name: Update /etc/hostname.
+  copy:
+    content: "{{ hostname }}"
+    dest: /etc/hostname
+    owner: root
+    group: root
+    mode: 0644
+  become: true
+

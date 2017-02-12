@@ -6,11 +6,13 @@
   - ec2_state: absent
   - ec2_keypair_state: absent
   - ec2_groups_state: absent
+  - linode_state: absent
   - cloud:
       aws:
         ec2:
-          hostnames1: {}
-          hostnames2: {}
+          ec2-host: {}
+      linode:
+        linode-host: {}
 
   roles:
   - ergonlogic.cloud

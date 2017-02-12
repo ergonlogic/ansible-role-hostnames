@@ -1,6 +1,6 @@
-ROLES_PATH       ?= tests/roles
-LINODE_INVENTORY ?= $(ROLES_PATH)/ergonlogic.cloud/inventory/linode.py
-EC2_INVENTORY    ?= $(ROLES_PATH)/ergonlogic.cloud/inventory/ec2.py
+ROLES_PATH ?= tests/roles
+
+.PHONY: hostname-test inv
 
 init-tests: $(ROLES_PATH)/ergonlogic.cloud $(ROLES_PATH)/ergonlogic.hostnames
 
@@ -10,17 +10,19 @@ $(ROLES_PATH)/ergonlogic.cloud:
 $(ROLES_PATH)/ergonlogic.hostnames:
 	cd $(ROLES_PATH) && ln -s ../.. ergonlogic.hostnames
 
-linode-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
-linode-test: init-tests generate-keypair
-	ansible-playbook tests/hosts/linode/setup.yml -i $(LINODE_INVENTORY)
-	ansible-playbook tests/hosts/common/test0.yml -i $(LINODE_INVENTORY)
-	ansible-playbook tests/hosts/linode/cleanup.yml -i $(LINODE_INVENTORY)
+hostnames-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
+hostnames-test: init-tests generate-keypair inv
+	ansible-playbook tests/hosts/setup.yml
+	ansible-playbook tests/hosts/ec2.yml
+	ansible-playbook tests/hosts/linode.yml
+	ansible-playbook tests/hosts/cleanup.yml
 
-ec2-test: export ANSIBLE_ROLES_PATH = $(ROLES_PATH)
-ec2-test: init-tests generate-keypair
-	ansible-playbook tests/hosts/ec2/setup.yml -i $(EC2_INVENTORY)
-	ansible-playbook tests/hosts/common/test0.yml -i $(EC2_INVENTORY)
-	ansible-playbook tests/hosts/ec2/cleanup.yml -i $(EC2_INVENTORY)
+inv: inventory
+	inventory/ec2.py --refresh-cache
+	inventory/linode.py --refresh-cache
+
+inventory: $(ROLES_PATH)/ergonlogic.cloud
+	ln -s $(ROLES_PATH)/ergonlogic.cloud/inventory/ .
 
 -include $(ROLES_PATH)/ergonlogic.cloud/mk/common.mk
 include .mk/GNUmakefile

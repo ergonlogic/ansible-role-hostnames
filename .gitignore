@@ -2,6 +2,7 @@
 *.retry
 meta/.galaxy_install_info
 tests/roles/*
+inventory
 linode.api.key
 aws.access.key
 aws.access.secret

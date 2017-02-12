@@ -1,0 +1,26 @@
+---
+
+- name: Set EC2 hostname facts
+  set_fact:
+    hostname: "{{ ec2_tag_Name }}"
+  when: ec2_tag_Name is defined
+
+- name: Set Linode hostname facts
+  set_fact:
+    hostname: "{{ linode_name }}"
+  when: linode_name is defined
+
+- name: Set EC2 IP address facts
+  set_fact:
+    private_ip_address: "{{ ec2_private_ip_address }}"
+  when: ec2_private_ip_address is defined
+
+- name: Set Linode IP address facts
+  set_fact:
+    private_ip_address: "{{ public_ip }}"
+  when: public_ip is defined
+
+- name: Set VM FQDN facts
+  set_fact:
+    fqdn: "{{ hostname }}.{{ dns_zone }}"
+
